@@ -22,14 +22,9 @@ add_library(Vector3_library
 )
 
 
-#add_executable(pub_setpoints_pos src/pub_setpoints_pos.cpp)
-#target_link_libraries(pub_setpoints_pos ${catkin_LIBRARIES} Vector3_library)
-#add_executable(pub_setpoints_traj src/pub_setpoints_traj.cpp)
-#target_link_libraries(pub_setpoints_traj ${catkin_LIBRARIES} Vector3_library)
-#add_executable(pub_setpoints_att src/pub_setpoints_att.cpp)
-#target_link_libraries(pub_setpoints_att ${catkin_LIBRARIES} Vector3_library)
-#add_executable(test_setpoints_traj src/test_setpoints_traj.cpp)
-#target_link_libraries(test_setpoints_traj ${catkin_LIBRARIES} Vector3_library)
+
+add_executable(manual_controll src/manual_controll.cpp)
+target_link_libraries(manual_controll ${catkin_LIBRARIES} Vector3_library)
 
 
 add_executable(formation_flight src/FormationFlight/formation_flight.cpp)
