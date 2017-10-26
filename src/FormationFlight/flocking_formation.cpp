@@ -108,7 +108,60 @@ Vector3 Cohension(Vector3 pos, Vector3 center)
 {
     return center-pos;
 }
-void Formation_Flight()
+void Line()//종대
+{
+    Vector3 fdirection;
+    Vector3 bdirection;
+    Vector3 rdirection;
+    Vector3 ldirection;
+
+    float scale=0.1;
+
+    fdirection=U1dir.normalize();
+
+
+
+    bdirection=fdirection*-1;
+
+    //리더의 앞과 오른쪽 벡터 계산
+
+    bdirection=bdirection*scale*2;
+
+    U2dir=U1pose+bdirection;
+    U3dir=U1pose+bdirection+bdirection;
+
+}
+void Column() //횡대
+{
+    Vector3 fdirection;
+    Vector3 rdirection;
+    Vector3 ldirection;
+
+    float scale=0.1;
+
+    fdirection=U1dir.normalize();
+
+    rdirection.x=cos(-90*degreeToradian)*fdirection.x-sin(-90*degreeToradian)*fdirection.y;
+    rdirection.y=sin(-90*degreeToradian)*fdirection.x+cos(-90*degreeToradian)*fdirection.y;
+
+
+    rdirection=rdirection.normalize();
+
+    ldirection=rdirection*-1;
+
+    //리더의 앞과 오른쪽 벡터 계산
+
+    rdirection=rdirection*scale*2;
+
+    ldirection=ldirection*scale*2;
+
+
+
+    U2dir=U1pose+ldirection;
+    U3dir=U1pose+rdirection;
+
+}
+void Triangle()
 {
     Vector3 fdirection;
     Vector3 bdirection;
@@ -195,7 +248,7 @@ void Flocking()
     if(dist2_3 <0.25 || dist2_1<0.25)
     {
         U2state.data=0;
-        Ka=1;
+        Ka=0.2;
         Ks=1;
         Kc=0;
         U2Ali=U2Ali*Ka;
@@ -210,7 +263,7 @@ void Flocking()
     else if((dist2_1>=0.25 && dist2_1 <0.5) && (dist2_3>=0.25 && dist2_3 <0.5))
     {
         U2state.data=1;
-        Formation_Flight();
+        Line();
         /*Ka=1;
         Ks=1;
         Kc=1;
@@ -222,7 +275,7 @@ void Flocking()
     }
     else
     {
-        Formation_Flight();
+        Line();
         U2state.data=2;
        /* Ka=1;
         Ks=0;
@@ -238,7 +291,7 @@ void Flocking()
     if(dist2_3<0.25 || dist3_1<0.25)
     {
         U3state.data=0;
-        Ka=1;
+        Ka=0.2;
         Ks=1;
         Kc=0;
         U3Ali=U3Ali*Ka;
@@ -252,7 +305,7 @@ void Flocking()
     else if((dist2_3>=0.25 && dist2_3 <0.5) && (dist3_1>=0.25 && dist3_1 <0.5))
     {
         U3state.data=1;
-        Formation_Flight();
+        Line();
         /*Ka=1;
         Ks=1;
         Kc=1;
@@ -265,7 +318,7 @@ void Flocking()
     else
     {
         U3state.data=2;
-        Formation_Flight();
+        Line();
         /*Ka=1;
         Ks=0;
         Kc=1;
