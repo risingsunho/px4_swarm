@@ -22,14 +22,14 @@ add_library(Vector3_library
 )
 
 
-add_executable(pub_setpoints_pos src/pub_setpoints_pos.cpp)
-target_link_libraries(pub_setpoints_pos ${catkin_LIBRARIES} Vector3_library)
-add_executable(pub_setpoints_traj src/pub_setpoints_traj.cpp)
-target_link_libraries(pub_setpoints_traj ${catkin_LIBRARIES} Vector3_library)
-add_executable(pub_setpoints_att src/pub_setpoints_att.cpp)
-target_link_libraries(pub_setpoints_att ${catkin_LIBRARIES} Vector3_library)
-add_executable(test_setpoints_traj src/test_setpoints_traj.cpp)
-target_link_libraries(test_setpoints_traj ${catkin_LIBRARIES} Vector3_library)
+#add_executable(pub_setpoints_pos src/pub_setpoints_pos.cpp)
+#target_link_libraries(pub_setpoints_pos ${catkin_LIBRARIES} Vector3_library)
+#add_executable(pub_setpoints_traj src/pub_setpoints_traj.cpp)
+#target_link_libraries(pub_setpoints_traj ${catkin_LIBRARIES} Vector3_library)
+#add_executable(pub_setpoints_att src/pub_setpoints_att.cpp)
+#target_link_libraries(pub_setpoints_att ${catkin_LIBRARIES} Vector3_library)
+#add_executable(test_setpoints_traj src/test_setpoints_traj.cpp)
+#target_link_libraries(test_setpoints_traj ${catkin_LIBRARIES} Vector3_library)
 
 
 add_executable(formation_flight src/FormationFlight/formation_flight.cpp)
@@ -50,6 +50,11 @@ add_executable(Mission_Manager src/FormationFlight/Mission_Manager.cpp)
 target_link_libraries(Mission_Manager ${catkin_LIBRARIES} Vector3_library)
 add_executable(Mission_start src/FormationFlight/Mission_start.cpp)
 target_link_libraries(Mission_start ${catkin_LIBRARIES} Vector3_library)
+
+add_executable(flocking src/FormationFlight/flocking.cpp)
+target_link_libraries(Mission_start ${catkin_LIBRARIES} Vector3_library)
+
+
 
 add_executable(keyboard_controller src/keyboard_controller.cpp)
 target_link_libraries(keyboard_controller ${catkin_LIBRARIES})

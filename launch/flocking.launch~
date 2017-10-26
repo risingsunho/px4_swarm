@@ -1,11 +1,17 @@
 <launch>
-	<node name="gps_setpoint_flight" pkg="modudculab_ros" type="gps_setpoint_flight" output="screen"/>
-	<node name="gps_controller" pkg="modudculab_ros" type="gps_controller" output="screen"/>
-	<node name="Mission_Manager" pkg="modudculab_ros" type="Mission_Manager" output="screen"/>
 
-	<node name="setpoint_flocking1" pkg="modudculab_ros" type="setpoint_flocking1" output="screen"/>
-	<node name="setpoint_flocking2" pkg="modudculab_ros" type="setpoint_flocking2" output="screen"/>
-	
+	<node name="gps_setpoint_flight1" pkg="px4_swarm" type="gps_setpoint_flight1" output="screen"/>
+	<node name="gps_controller1" pkg="px4_swarm" type="gps_controller1" output="screen"/>
+	<node name="gps_setpoint_flight2" pkg="px4_swarm" type="gps_setpoint_flight2" output="screen"/>
+	<node name="gps_controller2" pkg="px4_swarm" type="gps_controller2" output="screen"/>
+	<node name="gps_setpoint_flight3" pkg="px4_swarm" type="gps_setpoint_flight3" output="screen"/>
+	<node name="gps_controller3" pkg="px4_swarm" type="gps_controller3" output="screen"/>
+
+	<node name="Mission_Manager" pkg="px4_swarm" type="Mission_Manager" output="screen"/>
+	<node name="formation_flight" pkg="px4_swarm" type="formation_flight" output="screen"/>
+	<node name="Mission_start" pkg="px4_swarm" type="Mission_start" output="screen"/>
 
 </launch>
 
+
+<!-- 웨이포인트 비행 하는거 (gps 좌표 기반) -->

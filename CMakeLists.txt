@@ -51,5 +51,10 @@ target_link_libraries(Mission_Manager ${catkin_LIBRARIES} Vector3_library)
 add_executable(Mission_start src/FormationFlight/Mission_start.cpp)
 target_link_libraries(Mission_start ${catkin_LIBRARIES} Vector3_library)
 
+add_executable(flocking src/FormationFlight/flocking.cpp)
+target_link_libraries(flocking ${catkin_LIBRARIES} Vector3_library)
+
+
+
 add_executable(keyboard_controller src/keyboard_controller.cpp)
 target_link_libraries(keyboard_controller ${catkin_LIBRARIES})
