@@ -40,3 +40,4 @@ Vector3 Vector3::operator*(double p) {
 Vector3 Vector3::operator/( double p ) {
    return Vector3( x / p, y / p , z / p );
 }
+

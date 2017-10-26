@@ -1,5 +1,6 @@
 #pragma once
 #include <math.h>
+#include <geometry_msgs/Vector3.h>
 class Vector3 {
 
 
@@ -20,4 +21,5 @@ public:
    Vector3 operator-( Vector3 &other );
    Vector3 operator*( double p );
    Vector3 operator/( double p );
+
 };

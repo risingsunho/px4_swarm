@@ -2,9 +2,9 @@
 #include "geometry_msgs/PoseStamped.h"
 #include <math.h>
 #include <tf/transform_datatypes.h>
-#include <geometry_msgs/Vector3.h>
-
 #include "sensor_msgs/NavSatFix.h"
+#include "SVector3.h"
+
 
 #define longtolatscale 0.8004163362410785091197462331483
 #define lattolongscale 1.2493498129938325118272112550467
@@ -14,37 +14,38 @@
 
 using namespace std;
 
-geometry_msgs::Vector3 U1dir;
+Vector3 U1dir;
+Vector3 U2dir;
+Vector3 U3dir;
 
 sensor_msgs::NavSatFix U1GPS;
+sensor_msgs::NavSatFix U2GPS;
+sensor_msgs::NavSatFix U3GPS;
+
+
 sensor_msgs::NavSatFix msg;
 sensor_msgs::NavSatFix msg1;
 
-geometry_msgs::Vector3 U1pose;
-geometry_msgs::Vector3 U2pose;
-geometry_msgs::Vector3 U3pose;
-
 ros::Publisher mission_pub;
-ros::Publisher  mission_pub1;
+ros::Publisher mission_pub1;
 
-geometry_msgs::Vector3 VecPlus2(geometry_msgs::Vector3 A,geometry_msgs::Vector3 B)
-{
-    geometry_msgs::Vector3 sum;
-    sum.x=A.x+B.x;
-    sum.y=A.y+B.y;
-    return sum;
-}
+Vector3 U1pose;
+Vector3 U2pose;
+Vector3 U3pose;
 
-geometry_msgs::Vector3 GPStoWorldCoordinate(sensor_msgs::NavSatFix gps) //gps -> 좌표
+
+
+Vector3 GPStoWorldCoordinate(sensor_msgs::NavSatFix gps) //gps -> 좌표
 {
-    geometry_msgs::Vector3 tmp;
-    tmp.x=(gps.longitude-ZeropointX)*longtolatscale;
-    tmp.y=gps.latitude-ZeropointY;
-    tmp.x=tmp.x*10000;
-    tmp.y=tmp.y*10000;
+    double x,y,z;
+    x=(gps.longitude-ZeropointX)*longtolatscale;
+    y=gps.latitude-ZeropointY;
+    x=x*10000;
+    y=y*10000;
+    Vector3 tmp(x,y,z);
     return tmp;
 }
-sensor_msgs::NavSatFix WorldCoordinatetoGPS(geometry_msgs::Vector3 coor) //좌표계 -> gps
+sensor_msgs::NavSatFix WorldCoordinatetoGPS(Vector3 coor) //좌표계 -> gps
 {
     sensor_msgs::NavSatFix gps;
     coor.x=coor.x*0.0001;
@@ -55,93 +56,78 @@ sensor_msgs::NavSatFix WorldCoordinatetoGPS(geometry_msgs::Vector3 coor) //좌�
     return gps;
 }
 
-
-geometry_msgs::Vector3 normalize(geometry_msgs::Vector3 vec) //정규화
-{
-    geometry_msgs::Vector3 tmp;
-    float size=sqrt(vec.x*vec.x+vec.y*vec.y);
-    tmp.x=vec.x/size;
-    tmp.y=vec.y/size;
-    return tmp;
-}
-void ReceiveDirection(geometry_msgs::Vector3 vel)
-{
-    U1dir=vel;
-}
 void ReceiveGPS1(sensor_msgs::NavSatFix vel)
 {
     U1GPS=vel;
     U1pose=GPStoWorldCoordinate(U1GPS);
 }
-
-
-void ForwardDirection()
+void ReceiveGPS2(sensor_msgs::NavSatFix vel)
 {
-    geometry_msgs::Vector3 fdirection;
-    geometry_msgs::Vector3 bdirection;
-    geometry_msgs::Vector3 rdirection;
-    geometry_msgs::Vector3 ldirection;
+    U2GPS=vel;
+    U2pose=GPStoWorldCoordinate(U2GPS);
+}
+void ReceiveGPS3(sensor_msgs::NavSatFix vel)
+{
+    U3GPS=vel;
+    U3pose=GPStoWorldCoordinate(U3GPS);
+}
+void ReceiveDirection(geometry_msgs::Vector3 vel)
+{
+    U1dir.x=vel.x;
+    U1dir.y=vel.y;
+    U1dir.z=vel.z;
+}
+
+void Formation_Flight()
+{
+    Vector3 fdirection;
+    Vector3 bdirection;
+    Vector3 rdirection;
+    Vector3 ldirection;
 
     float scale=0.1;
 
-    if(U1dir.x==0 && U1dir.y==0)
-    {
-        U1dir.x=-0.7;
-        U1dir.y=1;
-    }
-
-    fdirection=normalize(U1dir);
+    fdirection=U1dir.normalize();
 
     rdirection.x=cos(-90*degreeToradian)*fdirection.x-sin(-90*degreeToradian)*fdirection.y;
     rdirection.y=sin(-90*degreeToradian)*fdirection.x+cos(-90*degreeToradian)*fdirection.y;
 
-    rdirection=normalize(rdirection);
+
+    rdirection=rdirection.normalize();
 
 
-    bdirection.x=-fdirection.x;
-    bdirection.y=-fdirection.y;
+    bdirection=fdirection*-1;
 
-    ldirection.x=-rdirection.x;
-    ldirection.y=-rdirection.y;
+
+    ldirection=rdirection*-1;
+
     //리더의 앞과 오른쪽 벡터 계산
 
 
-    fdirection.x*=scale;
-    fdirection.y*=scale;
+    fdirection=fdirection*scale;
 
-    bdirection.x*=scale*1.5;
-    bdirection.y*=scale*1.5;
+    bdirection=bdirection*scale*1.5;
 
-    rdirection.x*=scale*2;
-    rdirection.y*=scale*2;
+    rdirection=rdirection*scale*2;
 
-    ldirection.x*=scale*2;
-    ldirection.y*=scale*2;
+    ldirection=ldirection*scale*2;
 
 
 
+    U2dir=U1pose+bdirection+ldirection;
+    U3dir=U1pose+bdirection+rdirection;
 
 
-
-    geometry_msgs::Vector3 uav2position;
-    geometry_msgs::Vector3 uav3position;
-
-    uav2position=VecPlus2(U1pose,bdirection);
-    uav2position=VecPlus2(uav2position,ldirection);
 
    // ROS_INFO("u1position.x : %f",U1pose.x);
    // ROS_INFO("u1position.y : %f",U1pose.y);
    // ROS_INFO("uav2position.x : %f",uav2position.x);
    // ROS_INFO("uav2position.y : %f",uav2position.y);
 
-    uav3position=VecPlus2(U1pose,bdirection);
-    uav3position=VecPlus2(uav3position,rdirection);
 
+    msg=WorldCoordinatetoGPS(U2dir);
+    msg1=WorldCoordinatetoGPS(U3dir);
 
-
-
-    msg=WorldCoordinatetoGPS(uav2position);
-    msg1=WorldCoordinatetoGPS(uav3position);
     msg.altitude=U1GPS.altitude;
     msg1.altitude=U1GPS.altitude;
 
@@ -149,16 +135,13 @@ void ForwardDirection()
     mission_pub1.publish(msg1);
 }
 
-
-
-
-
-
 int main(int argc, char **argv)
 {
    ros::init(argc, argv, "formation_flight");
    ros::NodeHandle n;
    ros::Subscriber gps_sub1=n.subscribe("/mavros1/global_position/global", 1, ReceiveGPS1);
+   ros::Subscriber gps_sub2=n.subscribe("/mavros2/global_position/global", 1, ReceiveGPS2);
+   ros::Subscriber gps_sub3=n.subscribe("/mavros3/global_position/global", 1, ReceiveGPS3);
 
 
    mission_pub = n.advertise<sensor_msgs::NavSatFix>("/target2",10);
@@ -171,7 +154,7 @@ int main(int argc, char **argv)
 
 
    while(ros::ok()){
-       ForwardDirection();
+       Formation_Flight();
        ros::spinOnce();
        loop_rate.sleep();
    }

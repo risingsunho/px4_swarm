@@ -1,10 +1,12 @@
 #pragma once
 #include <math.h>
+#include <geometry_msgs/Vector3.h>
 class Vector3 {
 
 
 public:
    double x, y, z;
+   int state;
    Vector3();
    Vector3( double _x, double _y, double _z)
    {
@@ -20,4 +22,5 @@ public:
    Vector3 operator-( Vector3 &other );
    Vector3 operator*( double p );
    Vector3 operator/( double p );
+
 };

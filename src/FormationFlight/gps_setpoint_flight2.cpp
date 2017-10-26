@@ -9,6 +9,7 @@
 #include <mavros_msgs/CommandBool.h>
 #include <std_msgs/Bool.h>
 #include <math.h>
+#include <std_msgs/Int32.h>
 
 geometry_msgs::Vector3 key;
 geometry_msgs::Vector3 key1;
@@ -18,7 +19,12 @@ float speed=0.02;
 float takeoffheight=1.5;
 mavros_msgs::State current_state;
 bool start=false;
+std_msgs::Int32 state;
 
+void ReceiveState(std_msgs::Int32 vel)
+{
+    state=vel;
+}
 geometry_msgs::Vector3 normalize(geometry_msgs::Vector3 vec) //정규화
 {
     geometry_msgs::Vector3 tmp;
@@ -46,13 +52,12 @@ void ReceiveDirection1(geometry_msgs::Vector3 vel)
 void ReceiveDirection(geometry_msgs::Vector3 vel)
 {
     key=vel;
-    float size=sqrt(key.x*key.x+key.y*key.y);
-    if(size>=0.3)
+    if(state.data==2)
     {
         key=normalize(key);
-        speed=0.02;
+        speed=0.03;
     }
-    else if(size<0.3 && size>=0.1)
+    else if(state.data==0 || state.data==1)
     {
         key=normalize(key);
         speed=0.02;
@@ -80,6 +85,9 @@ int main(int argc, char **argv)
 {
    ros::init(argc, argv, "gps_setpoint_flight2");
    ros::NodeHandle n;
+
+   ros::Subscriber flock_state_sub=n.subscribe("/state2", 1, ReceiveState);
+
    ros::Subscriber manual_sub1=n.subscribe("/direction1", 1, ReceiveDirection1);
    ros::Subscriber manual_sub=n.subscribe("/direction2", 1, ReceiveDirection);
    ros::Publisher chatter_pub = n.advertise<geometry_msgs::PoseStamped>("/mavros2/setpoint_position/local",1);

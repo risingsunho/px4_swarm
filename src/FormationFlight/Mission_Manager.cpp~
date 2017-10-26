@@ -3,7 +3,7 @@
 #include <sensor_msgs/NavSatFix.h>
 #include <math.h>
 #include <std_msgs/Bool.h>
-#define MissionSize 6
+#define MissionSize 11
 
 
 

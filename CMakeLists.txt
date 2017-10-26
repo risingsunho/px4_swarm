@@ -53,6 +53,8 @@ target_link_libraries(Mission_start ${catkin_LIBRARIES} Vector3_library)
 
 add_executable(flocking src/FormationFlight/flocking.cpp)
 target_link_libraries(flocking ${catkin_LIBRARIES} Vector3_library)
+add_executable(flocking_formation src/FormationFlight/flocking_formation.cpp)
+target_link_libraries(flocking_formation ${catkin_LIBRARIES} Vector3_library)
 
 
 
