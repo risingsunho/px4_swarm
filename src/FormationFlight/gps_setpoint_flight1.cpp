@@ -12,11 +12,17 @@
 
 geometry_msgs::Vector3 key;
 geometry_msgs::PoseStamped msg;
-float height=0;
+
 float speed=0.02;
-float takeoffHeight=1.5;
+
+float initX=0;
+float initY=0;
+float initZ=0;
+float takeoffHeight=3;
+
 mavros_msgs::State current_state;
 bool start=false;
+
 void receiveStart(std_msgs::Bool vel)
 {
     start=vel.data;
@@ -30,11 +36,15 @@ geometry_msgs::Vector3 normalize(geometry_msgs::Vector3 vec) //정규화
     tmp.z=vec.z;
     return tmp;
 }
-void state_cb(const mavros_msgs::State::ConstPtr& msg){
+void state_cb(const mavros_msgs::State::ConstPtr& msg)
+{
     current_state = *msg;
 }
-void receivePose(geometry_msgs::PoseStamped vel){
-    height = vel.pose.position.z;
+void receivePose(geometry_msgs::PoseStamped vel)
+{
+    initX = vel.pose.position.x;
+    initY = vel.pose.position.y;
+    initZ = vel.pose.position.z;
 }
 void ReceiveDirection(geometry_msgs::Vector3 vel)
 {
@@ -67,9 +77,7 @@ int main(int argc, char **argv)
    ros::Publisher chatter_pub = n.advertise<geometry_msgs::PoseStamped>("/mavros1/setpoint_position/local",1);
    ros::Subscriber state_sub = n.subscribe<mavros_msgs::State>("/mavros1/state", 10, state_cb);
    ros::Subscriber takeoff_client = n.subscribe<geometry_msgs::PoseStamped>("/mavros1/local_position/pose",1,receivePose);
-
    ros::Subscriber start_client1 = n.subscribe<std_msgs::Bool>("/start",1,receiveStart);
-
    ros::ServiceClient arming_client = n.serviceClient<mavros_msgs::CommandBool>("/mavros1/cmd/arming");
    ros::ServiceClient set_mode_client = n.serviceClient<mavros_msgs::SetMode>("/mavros1/set_mode");
 
@@ -85,9 +93,9 @@ int main(int argc, char **argv)
 
    ros::Rate loop_rate(20);
 
-   msg.pose.position.x = 0;
-   msg.pose.position.y = 0;
-   msg.pose.position.z = takeoffHeight;
+   msg.pose.position.x = initX;
+   msg.pose.position.y = initY;
+   msg.pose.position.z = initZ+takeoffHeight;
 
 
   mavros_msgs::SetMode offb_set_mode;
@@ -115,10 +123,6 @@ int main(int argc, char **argv)
                last_request = ros::Time::now();
            }
        }
-      /* if(current_state.mode == "OFFBOARD" && current_state.armed && height>takeoffHeight-1)
-       {
-            start=true;
-       }*/
        if(!current_state.armed && current_state.mode == "OFFBOARD" && start)
        {
            ROS_INFO("exit");

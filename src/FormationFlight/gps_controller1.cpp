@@ -1,4 +1,3 @@
-
 #include <ros/ros.h>
 #include <geometry_msgs/Vector3.h>
 #include <sensor_msgs/NavSatFix.h>
@@ -45,38 +44,18 @@ geometry_msgs::Vector3 CalDirection()
 
 void ReceiveGPS(sensor_msgs::NavSatFix vel)
 {
-
     CurrentGPS=vel;
     vec=CalDirection();
     vec.z=DesiredGPS.altitude;
-    if(DesiredGPS.latitude==37.6005007 && DesiredGPS.longitude==126.8666028)
+    if(vec.x < 0.05 && vec.y < 0.05 && vec.x > -0.05 && vec.y > -0.05 && vec.x!=0 && vec.y!=0)
     {
-        if(vec.x < 0.05 && vec.y < 0.05 && vec.x > -0.05 && vec.y > -0.05)
-        {
-            //vec.x=0;
-            //vec.y=0;
-            vec.z=DesiredGPS.altitude;
-            next.data = true;
-            arr_pub.publish(next);
-        }
-        else
-        {
-            next.data = false;
-            arr_pub.publish(next);
-        }
+        next.data = true;
+        arr_pub.publish(next);
     }
     else
     {
-        if(vec.x < 0.05 && vec.y < 0.05 && vec.x > -0.05 && vec.y > -0.05)
-        {
-            next.data = true;
-            arr_pub.publish(next);
-        }
-        else
-        {
-            next.data = false;
-            arr_pub.publish(next);
-        }
+        next.data = false;
+        arr_pub.publish(next);
     }
 }
 
