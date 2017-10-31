@@ -1,9 +1,0 @@
-<launch>
-	<node name="gps_setpoint_flight" pkg="px4_swarm" type="gps_setpoint_flight" output="screen"/>
-	<node name="gps_controller" pkg="px4_swarm" type="gps_controller" output="screen"/>
-	<node name="Mission_Manager" pkg="px4_swarm" type="Mission_Manager" output="screen"/>
-
-	<node name="setpoint_flocking" pkg="px4_swarm" type="setpoint_flocking" output="screen"/>
-
-</launch>
-

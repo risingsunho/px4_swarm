@@ -1,9 +1,0 @@
-<launch>
-	<node name="gps_setpoint_flight" pkg="modudculab_ros" type="gps_setpoint_flight" output="screen"/>
-	<node name="gps_controller" pkg="modudculab_ros" type="gps_controller" output="screen"/>
-	<node name="Mission_Manager" pkg="modudculab_ros" type="Mission_Manager" output="screen"/>
-
-	<node name="setpoint_flocking" pkg="modudculab_ros" type="setpoint_flocking" output="screen"/>
-
-</launch>
-

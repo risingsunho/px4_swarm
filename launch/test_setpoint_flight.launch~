@@ -1,7 +1,0 @@
-<launch>
-
-<node name="test_setpoint_flight" pkg="modudculab_ros" type="test_setpoint_flight" output="screen"/>
-<node name="keyboard_controller" pkg="modudculab_ros" type="keyboard_controller" output="screen"/>
-
-</launch>
-
