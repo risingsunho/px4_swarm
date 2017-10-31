@@ -4,6 +4,7 @@
 #include <std_msgs/Int32.h>
 #include "sensor_msgs/NavSatFix.h"
 #include "SVector3.h"
+#include <std_msgs/Bool.h>
 
 #define longtolatscale 0.8004163362410785091197462331483
 #define lattolongscale 1.2493498129938325118272112550467
@@ -13,6 +14,11 @@
 
 using namespace std;
 
+std_msgs::Bool next;
+
+bool u1ready=false;
+bool u2ready=false;
+bool u3ready=false;
 
 Vector3 U1dir;
 Vector3 U2dir;
@@ -21,6 +27,7 @@ Vector3 U3dir;
 sensor_msgs::NavSatFix U1GPS;
 sensor_msgs::NavSatFix U2GPS;
 sensor_msgs::NavSatFix U3GPS;
+sensor_msgs::NavSatFix DesiredGPS;
 
 sensor_msgs::NavSatFix msg2;
 sensor_msgs::NavSatFix msg3;
@@ -35,11 +42,21 @@ std_msgs::Int32 U3state;
 ros::Publisher state_pub2;
 ros::Publisher state_pub3;
 
+ros::Publisher dir_pub1;
 ros::Publisher dir_pub2;
 ros::Publisher dir_pub3;
 
+ros::Publisher arr_pub;
+
+geometry_msgs::Vector3 vec1;
 geometry_msgs::Vector3 vec2;
 geometry_msgs::Vector3 vec3;
+
+
+void ReceiveMission(sensor_msgs::NavSatFix vel)
+{
+    DesiredGPS = vel;
+}
 
 Vector3 GPStoWorldCoordinate(sensor_msgs::NavSatFix gps) //gps -> 좌표
 {
@@ -61,19 +78,53 @@ sensor_msgs::NavSatFix WorldCoordinatetoGPS(Vector3 coor) //좌표계 -> gps
 
     return gps;
 }
+geometry_msgs::Vector3 CalDirection(sensor_msgs::NavSatFix cur,sensor_msgs::NavSatFix des)
+{
+    geometry_msgs::Vector3 translated;
+    Vector3 currentPlot;
+    Vector3 desiredPlot;
 
+    currentPlot=GPStoWorldCoordinate(cur);
+    desiredPlot=GPStoWorldCoordinate(des);
+
+    translated.x = (desiredPlot.x - currentPlot.x);
+    translated.y = (desiredPlot.y - currentPlot.y);
+
+    return translated;
+}
 void ReceiveGPS1(sensor_msgs::NavSatFix vel)
 {
-    U1GPS=vel;
+    u1ready=true;
+    ROS_INFO("U1 GPS is ready!!");
+    U1GPS=vel;    
     U1pose=GPStoWorldCoordinate(U1GPS);
+    vec1=CalDirection(U1GPS,DesiredGPS);
+    vec1.z=DesiredGPS.altitude;
+
+    if(vec1.x < 0.05 && vec1.y < 0.05 && vec1.x > -0.05 && vec1.y > -0.05 && vec1.x!=0 && vec1.y!=0)
+    {
+        next.data = true;
+        arr_pub.publish(next);
+    }
+    else
+    {
+        next.data = false;
+        arr_pub.publish(next);
+    }
+
+
 }
 void ReceiveGPS2(sensor_msgs::NavSatFix vel)
 {
+    u2ready=true;
+    ROS_INFO("U2 GPS is ready!!");
     U2GPS=vel;
     U2pose=GPStoWorldCoordinate(U2GPS);
 }
 void ReceiveGPS3(sensor_msgs::NavSatFix vel)
 {
+    u3ready=true;
+    ROS_INFO("U3 GPS is ready!!");
     U3GPS=vel;
     U3pose=GPStoWorldCoordinate(U3GPS);
 }
@@ -200,20 +251,6 @@ void Triangle()
     U2dir=U1pose+bdirection+ldirection;
     U3dir=U1pose+bdirection+rdirection;
 
-}
-geometry_msgs::Vector3 CalDirection(sensor_msgs::NavSatFix cur,sensor_msgs::NavSatFix des)
-{
-    geometry_msgs::Vector3 translated;
-    Vector3 currentPlot;
-    Vector3 desiredPlot;
-
-    currentPlot=GPStoWorldCoordinate(cur);
-    desiredPlot=GPStoWorldCoordinate(des);
-
-    translated.x = (desiredPlot.x - currentPlot.x);
-    translated.y = (desiredPlot.y - currentPlot.y);
-
-    return translated;
 }
 
 void Flocking()
@@ -378,23 +415,30 @@ int main(int argc, char **argv)
    ros::Subscriber gps_sub3=n.subscribe("/mavros3/global_position/global", 1, ReceiveGPS3);
    ros::Subscriber manual_sub=n.subscribe("/direction1", 1, ReceiveDirection);
 
+   ros::Subscriber mission_sub=n.subscribe("/target1", 1, ReceiveMission);
 
    state_pub2 = n.advertise<std_msgs::Int32>("/state2",10);
    state_pub3 = n.advertise<std_msgs::Int32>("/state3",10);
 
-
+   dir_pub1 = n.advertise<geometry_msgs::Vector3>("/direction1",10);
    dir_pub2 = n.advertise<geometry_msgs::Vector3>("/direction2",10);
    dir_pub3 = n.advertise<geometry_msgs::Vector3>("/direction3",10);
 
+   arr_pub = n.advertise<std_msgs::Bool>("/arrived1",10);
 
    ros::Rate loop_rate(30);
    ros::spinOnce();
 
+   next.data=false;
 
-   while(ros::ok()){
-       Flocking();
-       ros::spinOnce();
-       loop_rate.sleep();
+   while(ros::ok())
+   {
+       if(u1ready && u2ready && u3ready)
+       {
+          Flocking();
+          ros::spinOnce();
+          loop_rate.sleep();
+       }
    }
 
 

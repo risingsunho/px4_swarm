@@ -22,8 +22,11 @@ float initZ=0;
 float takeoffheight=3;
 
 mavros_msgs::State current_state;
-bool start=false;
 std_msgs::Int32 state;
+
+bool allready=false;
+bool U2ready=false;
+
 
 void ReceiveState(std_msgs::Int32 vel)
 {
@@ -45,10 +48,12 @@ void receivePose(geometry_msgs::PoseStamped vel){
     initX = vel.pose.position.x;
     initY = vel.pose.position.y;
     initZ = vel.pose.position.z;
+    U2ready=true;
+    ROS_INFO("U2 local_pose ready!");
 }
 void receiveStart(std_msgs::Bool vel)
 {
-    start=vel.data;
+    allready=vel.data;
 }
 
 void ReceiveDirection(geometry_msgs::Vector3 vel)
@@ -65,7 +70,7 @@ void ReceiveDirection(geometry_msgs::Vector3 vel)
         speed=0.02;
     }
     //ROS_INFO("U2 update Vel -> x : %f , y : %f \n",key.x,key.y);
-    if(start)
+    if(allready && U2ready)
     {
         msg.header.stamp = ros::Time::now();
         msg.header.frame_id = 1;
@@ -87,8 +92,9 @@ int main(int argc, char **argv)
    ros::Subscriber flock_state_sub=n.subscribe("/state2", 1, ReceiveState);
    ros::Subscriber manual_sub=n.subscribe("/direction2", 1, ReceiveDirection);
    ros::Publisher chatter_pub = n.advertise<geometry_msgs::PoseStamped>("/mavros2/setpoint_position/local",1);
-   ros::Subscriber state_sub = n.subscribe<mavros_msgs::State>("/mavros2/state", 10, state_cb);
    ros::Subscriber takeoff_client = n.subscribe<geometry_msgs::PoseStamped>("/mavros2/local_position/pose",1,receivePose);
+   ros::Subscriber state_sub = n.subscribe<mavros_msgs::State>("/mavros2/state", 10, state_cb);
+
 
 
    ros::Subscriber start_client2 = n.subscribe<std_msgs::Bool>("/start",1,receiveStart);
@@ -139,7 +145,7 @@ int main(int argc, char **argv)
                last_request = ros::Time::now();
            }
        }      
-       if(!current_state.armed && current_state.mode == "OFFBOARD" && start)
+       if(!current_state.armed && current_state.mode == "OFFBOARD" && allready)
        {
            ROS_INFO("exit");
             break;

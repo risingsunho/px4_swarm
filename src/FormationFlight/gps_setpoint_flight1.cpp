@@ -21,11 +21,12 @@ float initZ=0;
 float takeoffHeight=3;
 
 mavros_msgs::State current_state;
-bool start=false;
+bool allready=false;
+bool U1ready=false;
 
 void receiveStart(std_msgs::Bool vel)
 {
-    start=vel.data;
+    allready=vel.data;
 }
 geometry_msgs::Vector3 normalize(geometry_msgs::Vector3 vec) //정규화
 {
@@ -45,6 +46,8 @@ void receivePose(geometry_msgs::PoseStamped vel)
     initX = vel.pose.position.x;
     initY = vel.pose.position.y;
     initZ = vel.pose.position.z;
+    U1ready=true;
+    ROS_INFO("U1 local_pose ready!");
 }
 void ReceiveDirection(geometry_msgs::Vector3 vel)
 {
@@ -55,7 +58,7 @@ void ReceiveDirection(geometry_msgs::Vector3 vel)
         key=normalize(key);
     }
 
-    if(start)
+    if(allready && U1ready)
     {
         msg.header.stamp = ros::Time::now();
         msg.header.frame_id = 1;
@@ -123,7 +126,7 @@ int main(int argc, char **argv)
                last_request = ros::Time::now();
            }
        }
-       if(!current_state.armed && current_state.mode == "OFFBOARD" && start)
+       if(!current_state.armed && current_state.mode == "OFFBOARD" && allready)
        {
            ROS_INFO("exit");
             break;

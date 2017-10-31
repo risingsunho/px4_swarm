@@ -29,12 +29,7 @@ target_link_libraries(manual_controll ${catkin_LIBRARIES} Vector3_library)
 
 add_executable(formation_flight src/FormationFlight/formation_flight.cpp)
 target_link_libraries(formation_flight ${catkin_LIBRARIES} Vector3_library)
-add_executable(gps_controller1 src/FormationFlight/gps_controller1.cpp)
-target_link_libraries(gps_controller1 ${catkin_LIBRARIES} Vector3_library)
-#add_executable(gps_controller2 src/FormationFlight/gps_controller2.cpp)
-#target_link_libraries(gps_controller2 ${catkin_LIBRARIES} Vector3_library)
-#add_executable(gps_controller3 src/FormationFlight/gps_controller3.cpp)
-#target_link_libraries(gps_controller3 ${catkin_LIBRARIES} Vector3_library)
+
 add_executable(gps_setpoint_flight1 src/FormationFlight/gps_setpoint_flight1.cpp)
 target_link_libraries(gps_setpoint_flight1 ${catkin_LIBRARIES} Vector3_library)
 add_executable(gps_setpoint_flight2 src/FormationFlight/gps_setpoint_flight2.cpp)
