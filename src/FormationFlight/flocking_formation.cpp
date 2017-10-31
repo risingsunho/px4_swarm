@@ -94,12 +94,16 @@ geometry_msgs::Vector3 CalDirection(sensor_msgs::NavSatFix cur,sensor_msgs::NavS
 }
 void ReceiveGPS1(sensor_msgs::NavSatFix vel)
 {
-    u1ready=true;
-    ROS_INFO("U1 GPS is ready!!");
+    u1ready=true;    
     U1GPS=vel;    
     U1pose=GPStoWorldCoordinate(U1GPS);
     vec1=CalDirection(U1GPS,DesiredGPS);
     vec1.z=DesiredGPS.altitude;
+
+    U1dir.x=vec1.x;
+    U1dir.y=vec1.y;
+
+    ROS_INFO("U1 GPS is ready!!");
 
     if(vec1.x < 0.05 && vec1.y < 0.05 && vec1.x > -0.05 && vec1.y > -0.05 && vec1.x!=0 && vec1.y!=0)
     {
@@ -128,14 +132,6 @@ void ReceiveGPS3(sensor_msgs::NavSatFix vel)
     U3GPS=vel;
     U3pose=GPStoWorldCoordinate(U3GPS);
 }
-
-void ReceiveDirection(geometry_msgs::Vector3 vel)
-{
-    U1dir.x=vel.x;
-    U1dir.y=vel.y;
-    U1dir.z=vel.z;   
-}
-
 Vector3 Alignment()
 {
     Vector3 tmp;
@@ -390,10 +386,10 @@ void Flocking()
 
     vec2=CalDirection(U2GPS,msg2);
     vec3=CalDirection(U3GPS,msg3);
-    vec2.z=U1dir.z;
-    vec3.z=U1dir.z;
+    vec2.z=vec1.z;
+    vec3.z=vec1.z;
 
-
+    dir_pub1.publish(vec1);
     dir_pub2.publish(vec2);
     dir_pub3.publish(vec3);
 
@@ -413,7 +409,6 @@ int main(int argc, char **argv)
    ros::Subscriber gps_sub1=n.subscribe("/mavros1/global_position/global", 1, ReceiveGPS1);
    ros::Subscriber gps_sub2=n.subscribe("/mavros2/global_position/global", 1, ReceiveGPS2);
    ros::Subscriber gps_sub3=n.subscribe("/mavros3/global_position/global", 1, ReceiveGPS3);
-   ros::Subscriber manual_sub=n.subscribe("/direction1", 1, ReceiveDirection);
 
    ros::Subscriber mission_sub=n.subscribe("/target1", 1, ReceiveMission);
 
@@ -436,9 +431,9 @@ int main(int argc, char **argv)
        if(u1ready && u2ready && u3ready)
        {
           Flocking();
-          ros::spinOnce();
-          loop_rate.sleep();
        }
+       ros::spinOnce();
+       loop_rate.sleep();
    }
 
 

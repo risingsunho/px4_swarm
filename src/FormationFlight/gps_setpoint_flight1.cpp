@@ -47,7 +47,7 @@ void receivePose(geometry_msgs::PoseStamped vel)
     initY = vel.pose.position.y;
     initZ = vel.pose.position.z;
     U1ready=true;
-    ROS_INFO("U1 local_pose ready!");
+   // ROS_INFO("U1 local_pose ready!");
 }
 void ReceiveDirection(geometry_msgs::Vector3 vel)
 {

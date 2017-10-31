@@ -49,7 +49,7 @@ void receivePose(geometry_msgs::PoseStamped vel){
     initY = vel.pose.position.y;
     initZ = vel.pose.position.z;
     U2ready=true;
-    ROS_INFO("U2 local_pose ready!");
+   // ROS_INFO("U2 local_pose ready!");
 }
 void receiveStart(std_msgs::Bool vel)
 {

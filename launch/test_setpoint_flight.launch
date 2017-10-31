@@ -1,7 +1,0 @@
-<launch>
-
-<node name="test_setpoint_flight" pkg="px4_swarm" type="test_setpoint_flight" output="screen"/>
-<node name="keyboard_controller" pkg="px4_swarm" type="keyboard_controller" output="screen"/>
-
-</launch>
-

@@ -53,7 +53,7 @@ void receivePose(geometry_msgs::PoseStamped vel){
     initY=vel.pose.position.y;
     initZ=vel.pose.position.z;
     U3ready=true;
-    ROS_INFO("U3 local_pos ready!");
+   // ROS_INFO("U3 local_pose ready!");
 }
 
 void ReceiveDirection(geometry_msgs::Vector3 vel)
