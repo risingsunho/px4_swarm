@@ -8,7 +8,7 @@
 	<node name="gps_controller3" pkg="px4_swarm" type="gps_controller3" output="screen"/>
 
 	<node name="Mission_Manager" pkg="px4_swarm" type="Mission_Manager" output="screen"/>
-	<node name="flocking_formation" pkg="px4_swarm" type="flocking_formation" output="screen"/>
+	<node name="flocking" pkg="px4_swarm" type="flocking" output="screen"/>
 	<node name="Mission_start" pkg="px4_swarm" type="Mission_start" output="screen"/>
 
 </launch>
