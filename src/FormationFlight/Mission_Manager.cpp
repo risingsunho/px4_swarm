@@ -3,7 +3,7 @@
 #include <sensor_msgs/NavSatFix.h>
 #include <math.h>
 #include <std_msgs/Bool.h>
-#define MissionSize 11
+#define MissionSize 6
 
 
 
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
   // 2017-09-07
 
-  tmp.latitude = 37.6008854;
+  /*tmp.latitude = 37.6008854;
   tmp.longitude = 126.866451;
   tmp.altitude = 5;
   InputMission(tmp, 0);
@@ -102,11 +102,11 @@ int main(int argc, char** argv)
   tmp.latitude = 37.6009635;
   tmp.longitude = 126.8662035;
   tmp.altitude = 3;
-  InputMission(tmp, 10);
+  InputMission(tmp, 10);*/
 
 
 ////////////////////  본관////////////////
-/*  tmp.latitude=37.5995457;
+  tmp.latitude=37.5995457;
   tmp.longitude=126.863386;
   tmp.altitude=3;
   InputMission(tmp,0);
@@ -146,7 +146,7 @@ int main(int argc, char** argv)
   tmp.latitude=37.5995247;
   tmp.longitude=126.8634441;
   tmp.altitude=3;
-  InputMission(tmp,5);*/
+  InputMission(tmp,5);
 
 
   ros::Subscriber arr_sub=n.subscribe("/arrived1", 10, ReceiveMissionReceived);
