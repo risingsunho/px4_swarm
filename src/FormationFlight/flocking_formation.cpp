@@ -94,6 +94,10 @@ geometry_msgs::Vector3 CalDirection(sensor_msgs::NavSatFix cur,sensor_msgs::NavS
 }
 void ReceiveGPS1(sensor_msgs::NavSatFix vel)
 {
+    if(!u1ready)
+    {
+        ROS_INFO("U1 GPS is ready!!");
+    }
     u1ready=true;    
     U1GPS=vel;    
     U1pose=GPStoWorldCoordinate(U1GPS);
@@ -102,8 +106,6 @@ void ReceiveGPS1(sensor_msgs::NavSatFix vel)
 
     U1dir.x=vec1.x;
     U1dir.y=vec1.y;
-
-    ROS_INFO("U1 GPS is ready!!");
 
     if(vec1.x < 0.05 && vec1.y < 0.05 && vec1.x > -0.05 && vec1.y > -0.05 && vec1.x!=0 && vec1.y!=0)
     {
@@ -120,15 +122,21 @@ void ReceiveGPS1(sensor_msgs::NavSatFix vel)
 }
 void ReceiveGPS2(sensor_msgs::NavSatFix vel)
 {
+    if(!u2ready)
+    {
+        ROS_INFO("U2 GPS is ready!!");
+    }
     u2ready=true;
-    ROS_INFO("U2 GPS is ready!!");
     U2GPS=vel;
     U2pose=GPStoWorldCoordinate(U2GPS);
 }
 void ReceiveGPS3(sensor_msgs::NavSatFix vel)
 {
+    if(!u3ready)
+    {
+        ROS_INFO("U3 GPS is ready!!");
+    }
     u3ready=true;
-    ROS_INFO("U3 GPS is ready!!");
     U3GPS=vel;
     U3pose=GPStoWorldCoordinate(U3GPS);
 }
