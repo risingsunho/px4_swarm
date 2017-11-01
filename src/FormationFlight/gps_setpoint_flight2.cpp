@@ -13,7 +13,7 @@
 
 geometry_msgs::Vector3 key;
 geometry_msgs::PoseStamped msg;
-ros::Publisher chatter_pub;
+
 float speed=0.02;
 
 
@@ -86,7 +86,6 @@ void ReceiveDirection(geometry_msgs::Vector3 vel)
         msg.pose.orientation.y = 0;
         msg.pose.orientation.z = 0;
         msg.pose.orientation.w = 1;
-        chatter_pub.publish(msg);
     }
 }
 
@@ -97,7 +96,7 @@ int main(int argc, char **argv)
 
    ros::Subscriber flock_state_sub=n.subscribe("/state2", 1, ReceiveState);
    ros::Subscriber manual_sub=n.subscribe("/direction2", 1, ReceiveDirection);
-   chatter_pub = n.advertise<geometry_msgs::PoseStamped>("/mavros2/setpoint_position/local",1);
+   ros::Publisher chatter_pub = n.advertise<geometry_msgs::PoseStamped>("/mavros2/setpoint_position/local",1);
    ros::Subscriber takeoff_client = n.subscribe<geometry_msgs::PoseStamped>("/mavros2/local_position/pose",1,receivePose);
    ros::Subscriber state_sub = n.subscribe<mavros_msgs::State>("/mavros2/state", 10, state_cb);
 
@@ -156,6 +155,7 @@ int main(int argc, char **argv)
            ROS_INFO("exit");
             break;
        }
+       chatter_pub.publish(msg);
        ros::spinOnce();
        loop_rate.sleep();
    }
