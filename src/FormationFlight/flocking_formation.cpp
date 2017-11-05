@@ -319,7 +319,15 @@ void Flocking()
     else if((dist2_1>=0.25 && dist2_1 <0.5) && (dist2_3>=0.25 && dist2_3 <0.5))
     {
         U2state.data=1;
-        Triangle();
+        Triangle();      
+        if(DesiredGPS.latitude==37.6005007)//4
+        {
+            Column();
+        }
+        else if(DesiredGPS.latitude==37.6006794)//5
+        {
+            Line();
+        }
         /*Ka=1;
         Ks=1;
         Kc=1;
@@ -333,6 +341,14 @@ void Flocking()
     {
         Triangle();
         U2state.data=2;
+        if(DesiredGPS.latitude==37.6005007)//4
+        {
+            Column();
+        }
+        else if(DesiredGPS.latitude==37.6006794)//5
+        {
+            Line();
+        }
        /* Ka=1;
         Ks=0;
         Kc=1;
@@ -362,6 +378,14 @@ void Flocking()
     {
         U3state.data=1;
         Triangle();
+        if(DesiredGPS.latitude==37.6005007)//4
+        {
+            Column();
+        }
+        else if(DesiredGPS.latitude==37.6006794)//5
+        {
+            Line();
+        }
         /*Ka=1;
         Ks=1;
         Kc=1;
@@ -375,6 +399,14 @@ void Flocking()
     {
         U3state.data=2;
         Triangle();
+        if(DesiredGPS.latitude==37.6005007)//4
+        {
+            Column();
+        }
+        else if(DesiredGPS.latitude==37.6006794)//5
+        {
+            Line();
+        }
         /*Ka=1;
         Ks=0;
         Kc=1;
@@ -418,7 +450,7 @@ int main(int argc, char **argv)
    ros::Subscriber gps_sub2=n.subscribe("/mavros2/global_position/global", 1, ReceiveGPS2);
    ros::Subscriber gps_sub3=n.subscribe("/mavros3/global_position/global", 1, ReceiveGPS3);
 
-   ros::Subscriber mission_sub=n.subscribe("/target1", 1, ReceiveMission);
+   ros::Subscriber mission_sub=n.subscribe("/target1", 10, ReceiveMission);
 
    state_pub2 = n.advertise<std_msgs::Int32>("/state2",10);
    state_pub3 = n.advertise<std_msgs::Int32>("/state3",10);
