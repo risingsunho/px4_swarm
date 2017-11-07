@@ -108,7 +108,7 @@ int main(int argc, char** argv)
 ////////////////////  본관////////////////
   tmp.latitude=37.5995457;
   tmp.longitude=126.863386;
-  tmp.altitude=3;
+  tmp.altitude=3.5;
   InputMission(tmp,0);
 
 
@@ -117,7 +117,7 @@ int main(int argc, char** argv)
 
   tmp.latitude=37.5996187;
   tmp.longitude=126.8632602;
-  tmp.altitude=3;
+  tmp.altitude=3.5;
   InputMission(tmp,1);
 
 
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 
   tmp.latitude=37.599537;
   tmp.longitude=126.8631766;
-  tmp.altitude=3;
+  tmp.altitude=3.5;
   InputMission(tmp,2);
 
 
@@ -133,19 +133,19 @@ int main(int argc, char** argv)
 
   tmp.latitude=37.5994378;
   tmp.longitude=126.8633271;
-  tmp.altitude=3;
+  tmp.altitude=3.5;
   InputMission(tmp,3);
 
 
   tmp.latitude=37.5993906;
   tmp.longitude=126.8635055;
-  tmp.altitude=3;
+  tmp.altitude=3.5;
   InputMission(tmp,4);
 
 
   tmp.latitude=37.5995247;
   tmp.longitude=126.8634441;
-  tmp.altitude=3;
+  tmp.altitude=3.5;
   InputMission(tmp,5);
 
 

@@ -20,7 +20,7 @@ float speed=0.02;
 float initX=0;
 float initY=0;
 float initZ=0;
-float takeoffHeight=3;
+float takeoffHeight=3.5;
 
 mavros_msgs::State current_state;
 bool allready=false;
@@ -114,19 +114,22 @@ int main(int argc, char **argv)
    arm_cmd.request.value = true;
    ros::Time last_request = ros::Time::now();
 
-   while(ros::ok()){       
-       if( current_state.mode != "OFFBOARD" &&
-           (ros::Time::now() - last_request > ros::Duration(5.0))){
-           if( set_mode_client.call(offb_set_mode) &&
-               offb_set_mode.response.success){
+   while(ros::ok())
+   {
+       if( current_state.mode != "OFFBOARD" && (ros::Time::now() - last_request > ros::Duration(5.0)))
+       {
+           if( set_mode_client.call(offb_set_mode) && offb_set_mode.response.success)
+           {
                ROS_INFO("Offboard enabled");
            }
            last_request = ros::Time::now();
-       } else {
-           if( !current_state.armed &&
-               (ros::Time::now() - last_request > ros::Duration(5.0))){
-               if( arming_client.call(arm_cmd) &&
-                   arm_cmd.response.success){
+       }
+       else
+       {
+           if( !current_state.armed && (ros::Time::now() - last_request > ros::Duration(5.0)))
+           {
+               if( arming_client.call(arm_cmd) && arm_cmd.response.success)
+               {
                    ROS_INFO("Vehicle armed");
                }
                last_request = ros::Time::now();
@@ -137,7 +140,10 @@ int main(int argc, char **argv)
            ROS_INFO("exit");
             break;
        }
-       chatter_pub.publish(msg);
+       if(U1ready)
+       {
+          chatter_pub.publish(msg);
+       }
        ros::spinOnce();
        loop_rate.sleep();
    }

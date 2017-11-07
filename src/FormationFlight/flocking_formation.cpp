@@ -319,7 +319,7 @@ void Flocking()
     else if((dist2_1>=0.25 && dist2_1 <0.5) && (dist2_3>=0.25 && dist2_3 <0.5))
     {
         U2state.data=1;
-        Triangle();
+        Column();
         /*Ka=1;
         Ks=1;
         Kc=1;
@@ -331,7 +331,7 @@ void Flocking()
     }
     else
     {
-        Triangle();
+        Column();
         U2state.data=2;
        /* Ka=1;
         Ks=0;
@@ -361,7 +361,7 @@ void Flocking()
     else if((dist2_3>=0.25 && dist2_3 <0.5) && (dist3_1>=0.25 && dist3_1 <0.5))
     {
         U3state.data=1;
-        Triangle();
+        Column();
         /*Ka=1;
         Ks=1;
         Kc=1;
@@ -374,7 +374,7 @@ void Flocking()
     else
     {
         U3state.data=2;
-        Triangle();
+        Column();
         /*Ka=1;
         Ks=0;
         Kc=1;

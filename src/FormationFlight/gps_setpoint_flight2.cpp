@@ -20,7 +20,7 @@ float speed=0.02;
 float initX=0;
 float initY=0;
 float initZ=0;
-float takeoffheight=3;
+float takeoffheight=3.5;
 
 mavros_msgs::State current_state;
 std_msgs::Int32 state;
@@ -51,7 +51,7 @@ void receivePose(geometry_msgs::PoseStamped vel){
     initZ = vel.pose.position.z;
     if(!U2ready)
     {
-	ROS_INFO("U2 local_pose ready!");
+        ROS_INFO("U2 local_pose ready!");
     }
     U2ready=true;
 
@@ -155,7 +155,11 @@ int main(int argc, char **argv)
            ROS_INFO("exit");
             break;
        }
-       chatter_pub.publish(msg);
+       if(U2ready)
+       {
+            chatter_pub.publish(msg);
+       }
+
        ros::spinOnce();
        loop_rate.sleep();
    }
