@@ -23,7 +23,6 @@ geometry_msgs::Vector3 pos;
 geometry_msgs::Vector3 att;
 geometry_msgs::Vector3 rpy;
 
-
 void ReceivePose(geometry_msgs::PoseStamped quat)
 {
 
@@ -47,6 +46,7 @@ void ReceivePose(geometry_msgs::PoseStamped quat)
     rpy.y=att.y;
     rpy.z=att.z;
 }
+
 void ReceiveManual(mavros_msgs::ManualControl vel)
 {
     msg.header.stamp = ros::Time::now();
@@ -75,13 +75,16 @@ void ReceiveManual(mavros_msgs::ManualControl vel)
 }
 int main(int argc, char **argv)
 {
-   ros::init(argc, argv, "pub_setpoints");
+   ros::init(argc, argv, "Manual_Control");
    ros::NodeHandle n;
-   ros::Publisher pos_pub = n.advertise<geometry_msgs::Vector3>("/pos",100);
-   ros::Publisher rpy_pub = n.advertise<geometry_msgs::Vector3>("/RollPitchYaw",100);
-   ros::Publisher chatter_pub = n.advertise<geometry_msgs::TwistStamped>("/mavros/setpoint_velocity/cmd_vel",100);
-   ros::Subscriber manual_sub=n.subscribe("/mavros1/manual_control/control", 100, ReceiveManual);
-   ros::Subscriber pose_sub=n.subscribe("/mavros/local_position/pose", 10, ReceivePose);
+   ros::Publisher pos_pub1 = n.advertise<geometry_msgs::Vector3>("/pos",100);
+   ros::Publisher rpy_pub1 = n.advertise<geometry_msgs::Vector3>("/RollPitchYaw",100);
+
+   ros::Publisher chatter_pub = n.advertise<geometry_msgs::TwistStamped>("/mavros1/setpoint_velocity/cmd_vel",100);
+   ros::Subscriber manual_sub=n.subscribe("/mavros/manual_control/control", 100, ReceiveManual);
+
+
+   ros::Subscriber pose_sub1=n.subscribe("/mavros1/local_position/pose", 10, ReceivePose);
 
    ros::Rate loop_rate(30);
    ros::spinOnce();
@@ -90,8 +93,12 @@ int main(int argc, char **argv)
    while(ros::ok()){
       // pub_att.publish(cmd_att);
        chatter_pub.publish(msg);
-       rpy_pub.publish(rpy);
-       pos_pub.publish(pos);
+
+
+       rpy_pub1.publish(rpy);
+       pos_pub1.publish(pos);
+
+
        ros::spinOnce();
        loop_rate.sleep();
    }
