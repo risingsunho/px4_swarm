@@ -362,7 +362,7 @@ void Flocking()
     else if((dist2_3>=0.25 && dist2_3 <0.5) && (dist3_1>=0.25 && dist3_1 <0.5))
     {
         U3state.data=1;
-	Line();
+        Column();
         /*Ka=1;
         Ks=1;
         Kc=1;
@@ -375,7 +375,7 @@ void Flocking()
     else
     {
         U3state.data=2;
-	Line();
+        Column();
         /*Ka=1;
         Ks=0;
         Kc=1;
