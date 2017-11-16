@@ -52,6 +52,13 @@ geometry_msgs::Vector3 vec1;
 geometry_msgs::Vector3 vec2;
 geometry_msgs::Vector3 vec3;
 
+std_msgs::Int32 MissionNumber;
+
+
+void ReceiveMissionNumber(std_msgs::Int32 vel)
+{
+    MissionNumber=vel;
+}
 
 void ReceiveMission(sensor_msgs::NavSatFix vel)
 {
@@ -107,6 +114,7 @@ void ReceiveGPS1(sensor_msgs::NavSatFix vel)
     U1dir.x=vec1.x;
     U1dir.y=vec1.y;
 
+   // ROS_INFO("vec1.x : %f, vec1.y : %f", U1dir.x,U1dir.y);
     if(vec1.x < 0.05 && vec1.y < 0.05 && vec1.x > -0.05 && vec1.y > -0.05 && vec1.x!=0 && vec1.y!=0)
     {
         next.data = true;
@@ -182,8 +190,11 @@ void Line()//종대
 
     bdirection=bdirection*scale*2;
 
-    U2dir=U1pose+bdirection;
-    U3dir=U1pose+bdirection+bdirection;
+
+   //  ROS_INFO("bdirection : ( %f , %f )",bdirection.x,bdirection.y);
+
+    U2dir=U1pose+bdirection;    
+    U3dir=U1pose+bdirection+bdirection+bdirection;
 
 }
 void Column() //횡대
@@ -200,20 +211,25 @@ void Column() //횡대
     rdirection.y=sin(-90*degreeToradian)*fdirection.x+cos(-90*degreeToradian)*fdirection.y;
 
 
+
+
     rdirection=rdirection.normalize();
 
     ldirection=rdirection*-1;
 
     //리더의 앞과 오른쪽 벡터 계산
 
-    rdirection=rdirection*scale*2;
+   // ROS_INFO("rdirection :( %f , %f ), ldirection : ( %f , %f )",rdirection.x,rdirection.y,ldirection.x,ldirection.y);
 
-    ldirection=ldirection*scale*2;
+    rdirection=rdirection*scale*4.5;
+    ldirection=ldirection*scale*4.5;
+
 
 
 
     U2dir=U1pose+ldirection;
     U3dir=U1pose+rdirection;
+
 
 }
 void Triangle()
@@ -318,8 +334,24 @@ void Flocking()
     }
     else if((dist2_1>=0.25 && dist2_1 <0.5) && (dist2_3>=0.25 && dist2_3 <0.5))
     {
-        U2state.data=1;
-        Line();
+        U2state.data=1;        
+        if(MissionNumber.data==2)
+        {
+            Line();
+        }
+        else if(MissionNumber.data==3)
+        {
+            U2state.data=2;
+            Column();
+        }
+        else if(MissionNumber.data==4)
+        {
+            Line();
+        }
+        else
+        {
+            Triangle();
+        }
         /*Ka=1;
         Ks=1;
         Kc=1;
@@ -333,7 +365,22 @@ void Flocking()
     {
         
         U2state.data=2;
-        Line();
+        if(MissionNumber.data==2)
+        {
+            Line();
+        }
+        else if(MissionNumber.data==3)
+        {
+            Column();
+        }
+        else if(MissionNumber.data==4)
+        {
+            Line();
+        }
+        else
+        {
+            Triangle();
+        }
        /* Ka=1;
         Ks=0;
         Kc=1;
@@ -362,7 +409,23 @@ void Flocking()
     else if((dist2_3>=0.25 && dist2_3 <0.5) && (dist3_1>=0.25 && dist3_1 <0.5))
     {
         U3state.data=1;
-	Line();
+        if(MissionNumber.data==2)
+        {
+            Line();
+        }
+        else if(MissionNumber.data==3)
+        {
+            U3state.data=2;
+            Column();
+        }
+        else if(MissionNumber.data==4)
+        {
+            Line();
+        }
+        else
+        {
+            Triangle();
+        }
         /*Ka=1;
         Ks=1;
         Kc=1;
@@ -375,7 +438,22 @@ void Flocking()
     else
     {
         U3state.data=2;
-	Line();
+        if(MissionNumber.data==2)
+        {
+            Line();
+        }
+        else if(MissionNumber.data==3)
+        {
+            Column();
+        }
+        else if(MissionNumber.data==4)
+        {
+            Line();
+        }
+        else
+        {
+            Triangle();
+        }
         /*Ka=1;
         Ks=0;
         Kc=1;
@@ -418,6 +496,7 @@ int main(int argc, char **argv)
    ros::Subscriber gps_sub1=n.subscribe("/mavros1/global_position/global", 1, ReceiveGPS1);
    ros::Subscriber gps_sub2=n.subscribe("/mavros2/global_position/global", 1, ReceiveGPS2);
    ros::Subscriber gps_sub3=n.subscribe("/mavros3/global_position/global", 1, ReceiveGPS3);
+   ros::Subscriber mission_number_sub=n.subscribe("/MissionNumber", 1, ReceiveMissionNumber);
 
    ros::Subscriber mission_sub=n.subscribe("/target1", 1, ReceiveMission);
 
