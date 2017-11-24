@@ -1,11 +1,11 @@
 <launch>
 	<!--arg name="fcu_url" default="udp://:14540@localhost:14557"/-->
-	<arg name="fcu_url" default= "/dev/ttyUSB0:57600"/>
+	<arg name="fcu_url" default= "/dev/ttyUSB2:57600"/>
 	<arg name="gcs_url" default="" />
-	<arg name="tgt_system" default="1" />
+	<arg name="tgt_system" default="3" />
 	<arg name="tgt_component" default="1" />
 	
-	<node name="mavros2" pkg="mavros" type="mavros_node" output="screen">
+	<node name="mavros3" pkg="mavros" type="mavros_node" output="screen">
 		<param name="fcu_url" value="$(arg fcu_url)" />
 		<param name="gcs_url" value="$(arg gcs_url)" />
 		<param name="target_system_id" value="$(arg tgt_system)" />

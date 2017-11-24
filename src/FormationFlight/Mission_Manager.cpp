@@ -54,40 +54,40 @@ int main(int argc, char** argv)
   sensor_msgs::NavSatFix tmp;
   MissionNum.data=0;
 
-
-  tmp.latitude = 37.6009000;
-  tmp.longitude = 126.866451;
-  tmp.altitude = 5;
+// one way waypoint
+  tmp.latitude = 37.6009363;
+  tmp.longitude = 126.8662481;
+  tmp.altitude = 4;
   InputMission(tmp, 0);
 
-  tmp.latitude = 37.6009500;
-  tmp.longitude = 126.866451;
-  tmp.altitude = 5;
+  tmp.latitude = 37.6008799;
+  tmp.longitude = 126.8664289;
+  tmp.altitude = 4;
   InputMission(tmp, 1);
 
-  tmp.latitude = 37.601000;
-  tmp.longitude = 126.866451;
-  tmp.altitude = 5;
+  tmp.latitude = 37.60083;
+  tmp.longitude = 126.8666201;
+  tmp.altitude = 4;
   InputMission(tmp, 2);
 
-  tmp.latitude = 37.601500;
-  tmp.longitude = 126.866451;
-  tmp.altitude = 5;
-  InputMission(tmp, 3);
+  tmp.latitude = 37.6007596;
+  tmp.longitude = 126.8668559;
+  tmp.altitude = 4;
+  InputMission(tmp, 3);//////////////////
 
-  tmp.latitude = 37.601000;
-  tmp.longitude = 126.866451;
-  tmp.altitude = 5;
+  tmp.latitude = 37.60083;
+  tmp.longitude = 126.8666201;
+  tmp.altitude = 4;
   InputMission(tmp, 4);
 
-  tmp.latitude = 37.6009500;
-  tmp.longitude = 126.866451;
-  tmp.altitude = 5;
+  tmp.latitude = 37.6008799;
+  tmp.longitude = 126.8664289;
+  tmp.altitude = 4;
   InputMission(tmp, 5);
 
-  tmp.latitude = 37.6009000;
-  tmp.longitude = 126.866451;
-  tmp.altitude = 5;
+  tmp.latitude = 37.6009363;
+  tmp.longitude = 126.8662481;
+  tmp.altitude = 2;
   InputMission(tmp, 6);
 
 

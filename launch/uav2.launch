@@ -1,6 +1,6 @@
 <launch>
 	<!--arg name="fcu_url" default="udp://:14540@localhost:14557"/-->
-	<arg name="fcu_url" default= "/dev/ttyUSB1:57600"/>
+	<arg name="fcu_url" default= "/dev/ttyUSB0:57600"/>
 	<arg name="gcs_url" default="" />
 	<arg name="tgt_system" default="2" />
 	<arg name="tgt_component" default="1" />

@@ -335,16 +335,12 @@ void Flocking()
     else if((dist2_1>=0.25 && dist2_1 <0.5) && (dist2_3>=0.25 && dist2_3 <0.5))
     {
         U2state.data=1;        
-        if(MissionNumber.data==2)
-        {
-            Line();
-        }
-        else if(MissionNumber.data==3)
+        if(MissionNumber.data==1)
         {
             U2state.data=2;
             Column();
         }
-        else if(MissionNumber.data==4)
+        else if(MissionNumber.data==2)
         {
             Line();
         }
@@ -365,15 +361,11 @@ void Flocking()
     {
         
         U2state.data=2;
-        if(MissionNumber.data==2)
-        {
-            Line();
-        }
-        else if(MissionNumber.data==3)
+        if(MissionNumber.data==1)
         {
             Column();
         }
-        else if(MissionNumber.data==4)
+        else if(MissionNumber.data==2)
         {
             Line();
         }
@@ -408,17 +400,13 @@ void Flocking()
     }
     else if((dist2_3>=0.25 && dist2_3 <0.5) && (dist3_1>=0.25 && dist3_1 <0.5))
     {
-        U3state.data=1;
-        if(MissionNumber.data==2)
-        {
-            Line();
-        }
-        else if(MissionNumber.data==3)
+        U3state.data=1;        
+        if(MissionNumber.data==1)
         {
             U3state.data=2;
             Column();
         }
-        else if(MissionNumber.data==4)
+        else if(MissionNumber.data==2)
         {
             Line();
         }
@@ -438,15 +426,11 @@ void Flocking()
     else
     {
         U3state.data=2;
-        if(MissionNumber.data==2)
-        {
-            Line();
-        }
-        else if(MissionNumber.data==3)
+        if(MissionNumber.data==1)
         {
             Column();
         }
-        else if(MissionNumber.data==4)
+        else if(MissionNumber.data==2)
         {
             Line();
         }
