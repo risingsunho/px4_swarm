@@ -115,7 +115,7 @@ void ReceiveGPS1(sensor_msgs::NavSatFix vel)
     U1dir.y=vec1.y;
 
    // ROS_INFO("vec1.x : %f, vec1.y : %f", U1dir.x,U1dir.y);
-    if(vec1.x < 0.05 && vec1.y < 0.05 && vec1.x > -0.05 && vec1.y > -0.05 && vec1.x!=0 && vec1.y!=0)
+    if(vec1.x < 0.07 && vec1.y < 0.07 && vec1.x > -0.07 && vec1.y > -0.07 && vec1.x!=0 && vec1.y!=0)
     {
         next.data = true;
         arr_pub.publish(next);
@@ -335,12 +335,12 @@ void Flocking()
     else if((dist2_1>=0.25 && dist2_1 <0.5) && (dist2_3>=0.25 && dist2_3 <0.5))
     {
         U2state.data=1;        
-        if(MissionNumber.data==1)
+        if(MissionNumber.data==1 ||MissionNumber.data==5)
         {
             U2state.data=2;
             Column();
         }
-        else if(MissionNumber.data==2)
+        else if(MissionNumber.data==3 || MissionNumber.data==7)
         {
             Line();
         }
@@ -361,11 +361,11 @@ void Flocking()
     {
         
         U2state.data=2;
-        if(MissionNumber.data==1)
+        if(MissionNumber.data==1 || MissionNumber.data==5)
         {
             Column();
         }
-        else if(MissionNumber.data==2)
+        else if(MissionNumber.data==3 || MissionNumber.data==7)
         {
             Line();
         }
@@ -401,12 +401,12 @@ void Flocking()
     else if((dist2_3>=0.25 && dist2_3 <0.5) && (dist3_1>=0.25 && dist3_1 <0.5))
     {
         U3state.data=1;        
-        if(MissionNumber.data==1)
+        if(MissionNumber.data==1 || MissionNumber.data==5)
         {
             U3state.data=2;
             Column();
         }
-        else if(MissionNumber.data==2)
+        else if(MissionNumber.data==3 || MissionNumber.data==7)
         {
             Line();
         }
@@ -426,11 +426,11 @@ void Flocking()
     else
     {
         U3state.data=2;
-        if(MissionNumber.data==1)
+        if(MissionNumber.data==1 || MissionNumber.data==5)
         {
             Column();
         }
-        else if(MissionNumber.data==2)
+        else if(MissionNumber.data==3 || MissionNumber.data==7)
         {
             Line();
         }

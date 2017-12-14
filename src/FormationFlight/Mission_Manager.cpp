@@ -4,7 +4,7 @@
 #include <math.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/Int32.h>
-#define MissionSize 7
+#define MissionSize 9
 
 
 
@@ -55,40 +55,52 @@ int main(int argc, char** argv)
   MissionNum.data=0;
 
 // one way waypoint
-  tmp.latitude = 37.6009363;
-  tmp.longitude = 126.8662481;
+  tmp.latitude = 37.6011879;
+  tmp.longitude = 126.866469;
   tmp.altitude = 4;
   InputMission(tmp, 0);
 
-  tmp.latitude = 37.6008799;
-  tmp.longitude = 126.8664289;
+  tmp.latitude = 37.6010508;
+  tmp.longitude = 126.8663829;
   tmp.altitude = 4;
   InputMission(tmp, 1);
 
-  tmp.latitude = 37.60083;
-  tmp.longitude = 126.8666201;
+  tmp.latitude = 37.6009124;
+  tmp.longitude = 126.8663187;
   tmp.altitude = 4;
   InputMission(tmp, 2);
 
-  tmp.latitude = 37.6007596;
-  tmp.longitude = 126.8668559;
+  tmp.latitude = 37.6007752;
+  tmp.longitude = 126.8662419;
   tmp.altitude = 4;
-  InputMission(tmp, 3);//////////////////
+  InputMission(tmp, 3);
 
-  tmp.latitude = 37.60083;
-  tmp.longitude = 126.8666201;
+  tmp.latitude = 37.6006479;
+  tmp.longitude = 126.8661823;
   tmp.altitude = 4;
   InputMission(tmp, 4);
 
-  tmp.latitude = 37.6008799;
-  tmp.longitude = 126.8664289;
+  //////////////////////////////////////////////////////
+
+  tmp.latitude = 37.6007349;
+  tmp.longitude = 126.8663487;
   tmp.altitude = 4;
   InputMission(tmp, 5);
 
-  tmp.latitude = 37.6009363;
-  tmp.longitude = 126.8662481;
+  tmp.latitude = 37.6008836;
+  tmp.longitude = 126.8664238;
   tmp.altitude = 2;
   InputMission(tmp, 6);
+
+  tmp.latitude = 37.6010323;
+  tmp.longitude = 126.8665109;
+  tmp.altitude = 4;
+  InputMission(tmp, 7);
+
+  tmp.latitude = 37.6011555;
+  tmp.longitude = 126.8665856;
+  tmp.altitude = 4;
+  InputMission(tmp, 8);
 
 
 
